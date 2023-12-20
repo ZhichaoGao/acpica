@@ -264,11 +264,15 @@ ApWriteToBinaryFile (
     ACPI_TABLE_HEADER       *Table,
     UINT32                  Instance)
 {
-    char                    Filename[ACPI_NAMESEG_SIZE + 16];
-    char                    InstanceStr [16];
+    char                    Filename[ACPI_NAMESEG_SIZE + 16 + 4 + 1];
+    char                    InstanceStr [17];
     ACPI_FILE               File;
     ACPI_SIZE               Actual;
     UINT32                  TableLength;
+    char                    OemId[ACPI_OEM_ID_SIZE + 1];
+    char                    OemTableId[ACPI_OEM_TABLE_ID_SIZE + 1];
+    UINT8                   Index;
+    UINT8                   Index2;
 
 
     /* Obtain table length */
@@ -294,11 +298,31 @@ ApWriteToBinaryFile (
 
     /* Handle multiple SSDTs - create different filenames for each */
 
-    if (Instance > 0)
-    {
-        snprintf (InstanceStr, sizeof (InstanceStr), "%u", Instance);
-        strcat (Filename, InstanceStr);
+    Index2 = 0;
+    for (Index = 0; Index < ACPI_OEM_ID_SIZE; Index++) {
+        if (Table->OemId[Index] != ' ' &&
+            Table->OemId[Index] != '\\' &&
+            Table->OemId[Index] != '/' &&
+            Table->OemId[Index] != 0) {
+            OemId[Index2] = Table->OemId[Index];
+            Index2++;
+        }
     }
+    OemId[Index2] = 0;
+    Index2 = 0;
+    for (Index = 0; Index < ACPI_OEM_TABLE_ID_SIZE; Index++) {
+        if (Table->OemTableId[Index] != ' ' &&
+            Table->OemTableId[Index] != '\\' &&
+            Table->OemTableId[Index] != '/' &&
+            Table->OemTableId[Index] != 0) {
+            OemTableId[Index2] = Table->OemTableId[Index];
+            Index2++;
+        }
+    }
+    OemTableId[Index2] = 0;
+    snprintf (InstanceStr, sizeof (InstanceStr), "_%s_%s", OemId, OemTableId);
+    InstanceStr[16] = 0;
+    strcat (Filename, InstanceStr);
 
     strcat (Filename, FILE_SUFFIX_BINARY_TABLE);
 
