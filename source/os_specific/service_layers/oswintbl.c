@@ -447,8 +447,8 @@ WindowsGetTableFromRegistry (
 
         /*
          * Windows stores SSDT at SSDT, SSD1, ..., SSD9, SSDA, ..., SSDS, SSDT,
-         * SSDU, ..., SSDY. If the first (0th) and the 29th tables have the same
-         * OEM ID, Table ID and Revision, then the 29th entry will overwrite the
+         * SSDU, ..., SSDY. If the first (0th) and the 35th tables have the same
+         * OEM ID, Table ID and Revision, then the 35th entry will overwrite the
          * first entry... Let's hope that we do not have that many entries.
          */
         if (Instance > 0 && ACPI_COMPARE_NAMESEG(Signature, ACPI_SIG_SSDT))
@@ -457,7 +457,7 @@ WindowsGetTableFromRegistry (
             {
                 KeyBuffer[strlen(KeyBuffer) - 1] = '0' + (char)Instance;
             }
-            else if (Instance < 29)
+            else if (Instance < 36)
             {
                 KeyBuffer[strlen(KeyBuffer) - 1] = 'A' + (char)(Instance - 10);
             }
