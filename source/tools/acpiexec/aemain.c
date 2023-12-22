@@ -281,6 +281,7 @@ usage (
     ACPI_OPTION ("-v",                  "Display version information");
     ACPI_OPTION ("-va",                 "Display verbose dump of any memory leaks");
     ACPI_OPTION ("-vd",                 "Display build date and time");
+    ACPI_OPTION ("-vf",                 "Verbose debug log to file");
     ACPI_OPTION ("-vh",                 "Verbose exception handler output");
     ACPI_OPTION ("-vi",                 "Verbose initialization output");
     ACPI_OPTION ("-vr",                 "Verbose region handler output");
@@ -550,6 +551,16 @@ AeDoOptions (
 
             printf (ACPI_COMMON_BUILD_TIME);
             return (1);
+
+        case 'f':
+
+            if (AcpiGetoptArgument (argc, argv))
+            {
+                return (-1);
+            }
+
+            AcpiDbOpenDebugFile (AcpiGbl_Optarg);
+            break;
 
         case 'h':
 

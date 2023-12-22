@@ -591,7 +591,7 @@ AcpiInitializeDebugger (
 
     AcpiGbl_DbDebugLevel        = ACPI_LV_VERBOSITY2;
     AcpiGbl_DbConsoleDebugLevel = ACPI_NORMAL_DEFAULT | ACPI_LV_TABLES;
-    AcpiGbl_DbOutputFlags       = ACPI_DB_CONSOLE_OUTPUT;
+    AcpiGbl_DbOutputFlags       = ACPI_DB_CONSOLE_OUTPUT | ACPI_DB_REDIRECTABLE_OUTPUT;
 
     AcpiGbl_DbOpt_NoIniMethods  = FALSE;
     AcpiGbl_DbOpt_NoRegionSupport = FALSE;
